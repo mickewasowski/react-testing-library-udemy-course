@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import './App.css';
+import { kebabCaseToTitleCase } from './utils';
 
 function App() {
-  const [btnColor, setBtnColor] = useState('red');
+  const [btnColor, setBtnColor] = useState('medium-violet-red');
   const [isDisabled, setIsDisabled] = useState(false);
-  const nextColor = btnColor === 'red' ? 'blue' : 'red';
-  
+  const nextColor = btnColor === 'medium-violet-red' ? 'midnight-blue' : 'medium-violet-red';
+  const colorName = kebabCaseToTitleCase(nextColor);
+
   const handleColorChange = (event) => {
     event.preventDefault();
     setBtnColor(nextColor);
@@ -19,7 +21,7 @@ function App() {
   return (
     <>
       <div>
-      <button onClick={handleColorChange} className={isDisabled ? 'grey' : btnColor} disabled={isDisabled}>Change to {nextColor}</button>
+      <button onClick={handleColorChange} className={isDisabled ? 'grey' : btnColor} disabled={isDisabled}>Change to {colorName}</button>
       </div>
       <div>
         <input type='checkbox' onClick={handleCheckBoxClick} id="disable-btn" name="disable button" />

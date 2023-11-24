@@ -10,17 +10,22 @@ test("button starts with the correct text and color", () => {
   const btnElement = screen.getByRole("button", { name: /blue/i });
 
   //check initial color of the button
-  expect(btnElement).toHaveClass("red");
+  //expect(btnElement).toHaveClass("red");
+  expect(btnElement).toHaveClass("medium-violet-red");
 
   //click the button
   fireEvent.click(btnElement);
 
   //check the button text
-  expect(btnElement).toHaveTextContent(/change to red/i)
+  //expect(btnElement).toHaveTextContent(/change to red/i)
+  expect(btnElement).toHaveTextContent(/change to Medium Violet Red/i)
 
   //check the button color
-  expect(btnElement).toHaveClass("blue");
-  expect(btnElement).toHaveStyle({ "background-color": "rgb(0, 0, 255)" });
+  //expect(btnElement).toHaveClass("blue");
+  //expect(btnElement).toHaveStyle({ "background-color": "rgb(0, 0, 255)" });
+
+  expect(btnElement).toHaveClass("midnight-blue");
+  expect(btnElement).toHaveStyle({ "background-color": "rgb(25, 25, 112)" });
 });
 
 test("checkbox flow", () => {
@@ -64,11 +69,13 @@ test("button turns grey when checkbox is ticked", () => {
   fireEvent.click(checkbox);
 
   expect(button).toBeEnabled();
-  expect(button).toHaveStyle({ "background-color": "rgb(255, 0, 0)" });
+  //expect(button).toHaveStyle({ "background-color": "rgb(255, 0, 0)" });
+  expect(button).toHaveStyle({ "background-color": "rgb(199, 21, 133)" });
 
   fireEvent.click(button);
 
-  expect(button).toHaveStyle({ "background-color": "rgb(0, 0, 255)" });
+  //expect(button).toHaveStyle({ "background-color": "rgb(0, 0, 255)" });
+  expect(button).toHaveStyle({ "background-color": "rgb(25, 25, 112)" });
 
   fireEvent.click(checkbox);
 
