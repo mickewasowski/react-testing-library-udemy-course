@@ -1,7 +1,18 @@
+import React, { useState } from 'react';
+import './App.css';
+
 function App() {
+  const [btnColor, setBtnColor] = useState('red');
+  const nextColor = btnColor === 'red' ? 'blue' : 'red';
+  
+  const handleColorChange = (event) => {
+    event.preventDefault();
+    setBtnColor(nextColor);
+  }
+
   return (
     <div>
-      <h1>I'm gonna learn React Testing Library</h1>
+     <button onClick={handleColorChange} className={btnColor}>Change to {nextColor}</button>
     </div>
   );
 }
