@@ -48,3 +48,15 @@ test("checkbox flow with clicking", () => {
   expect(button).toBeEnabled();
   expect(checkbox).not.toBeChecked();
 });
+
+test("button turns grey when checkbox is ticked", () => {
+  render(<App/>);
+
+  const button = screen.getByRole("button", { name: /blue/i });
+  const checkbox = screen.getByRole("checkbox", { name: /disable button/i });
+
+  fireEvent.click(checkbox);
+
+  expect(button).toBeDisabled();
+  expect(button).toHaveStyle({ "background-color": "rgb(128, 128, 128)" });
+});

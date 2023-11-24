@@ -19,7 +19,7 @@ function App() {
   return (
     <>
       <div>
-      <button onClick={handleColorChange} className={btnColor} disabled={isDisabled}>Change to {nextColor}</button>
+      <button onClick={handleColorChange} className={isDisabled ? 'grey' : btnColor} disabled={isDisabled}>Change to {nextColor}</button>
       </div>
       <div>
         <input type='checkbox' onClick={handleCheckBoxClick} id="disable-btn" name="disable button" />
