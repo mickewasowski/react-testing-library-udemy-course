@@ -31,3 +31,20 @@ test("checkbox flow", () => {
   expect(button).toBeEnabled();
   expect(checkbox).not.toBeChecked();
 });
+
+test("checkbox flow with clicking", () => {
+  render(<App />);
+
+  const button = screen.getByRole("button", { name: /blue/i });
+  const checkbox = screen.getByRole("checkbox", { name: /disable button/i });
+
+  fireEvent.click(checkbox);
+
+  expect(button).toBeDisabled();
+  expect(checkbox).toBeChecked();
+
+  fireEvent.click(checkbox);
+
+  expect(button).toBeEnabled();
+  expect(checkbox).not.toBeChecked();
+});
