@@ -1,5 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import App from './App';
+import { kebabCaseToTitleCase } from './utils';
 
 test("button starts with the correct text and color", () => {
   //render App
@@ -72,4 +73,18 @@ test("button turns grey when checkbox is ticked", () => {
   fireEvent.click(checkbox);
 
   expect(button).toHaveStyle({ "background-color": "rgb(128, 128, 128)" });
+});
+
+describe("kebabCaseToTitleCase", () => {
+  test("works for no hyphens", () => {
+    expect(kebabCaseToTitleCase("red")).toBe("Red");
+  });
+
+  test("works for one hyphen", () => {
+    expect(kebabCaseToTitleCase("midnight-blue")).toBe("Midnight Blue");
+  });
+
+  test("works for multiple hyphens", () => {
+    expect(kebabCaseToTitleCase("medium-violet-red")).toBe("Medium Violet Red");
+  });
 });
