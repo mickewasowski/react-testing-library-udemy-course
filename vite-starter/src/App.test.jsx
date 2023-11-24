@@ -59,4 +59,17 @@ test("button turns grey when checkbox is ticked", () => {
 
   expect(button).toBeDisabled();
   expect(button).toHaveStyle({ "background-color": "rgb(128, 128, 128)" });
+
+  fireEvent.click(checkbox);
+
+  expect(button).toBeEnabled();
+  expect(button).toHaveStyle({ "background-color": "rgb(255, 0, 0)" });
+
+  fireEvent.click(button);
+
+  expect(button).toHaveStyle({ "background-color": "rgb(0, 0, 255)" });
+
+  fireEvent.click(checkbox);
+
+  expect(button).toHaveStyle({ "background-color": "rgb(128, 128, 128)" });
 });
