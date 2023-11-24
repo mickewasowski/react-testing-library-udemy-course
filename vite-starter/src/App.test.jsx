@@ -21,3 +21,13 @@ test("button starts with the correct text and color", () => {
   expect(btnElement).toHaveClass("blue");
   expect(btnElement).toHaveStyle({ "background-color": "rgb(0, 0, 255)" });
 });
+
+test("checkbox flow", () => {
+  render(<App />);
+
+  const button = screen.getByRole("button", { name: /blue/i });
+  const checkbox = screen.getByRole("checkbox", { name: /disable button/i });
+
+  expect(button).toBeEnabled();
+  expect(checkbox).not.toBeChecked();
+});
