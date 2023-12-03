@@ -1,11 +1,14 @@
-import SummaryForm from "./components/SummaryForm";
+import Container from 'react-bootstrap/Container';
+import OrderEntry from './components/entry/OrderEntry';
+import { OrderDetailsProvider } from './contexts/OrderDetails';
 
 function App() {
   return (
-    <div>
-      <h1>Sundaes on Demand</h1>
-      <SummaryForm />
-    </div>
+    <Container>
+      <OrderDetailsProvider>
+        <OrderEntry />
+      </OrderDetailsProvider>
+    </Container>
   );
 }
 
