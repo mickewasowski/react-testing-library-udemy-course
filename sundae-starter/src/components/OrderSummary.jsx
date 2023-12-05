@@ -7,14 +7,14 @@ export default function OrderSummary({ changeOrderPhase }) {
 
     const scoopArray = Object.entries(optionCounts.scoops); // example: [["chocolate", 2], ["vanilla", 1]]
     const scoopList = scoopArray.map(([key, value]) => {
-        <li key={key}>
+        return <li key={key}>
             {value} {key}
         </li>
     });
 
     const toppingArray = Object.keys(optionCounts.toppings); // example: ["M&Ms", "Hot Fundge"]
     const toppingList = toppingArray.map((key) => {
-        <li key={key}>
+        return <li key={key}>
             {key}
         </li>
     });

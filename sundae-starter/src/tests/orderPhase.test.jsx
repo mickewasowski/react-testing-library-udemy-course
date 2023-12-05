@@ -5,7 +5,7 @@ import App from '../App';
 
 test('order phases for happy path', async () => {
     //render the App
-    render(<App />);
+    const { unmount } = render(<App />);
     const user = userEvent.setup();
 
     //add ice cream scoops and toppings
@@ -27,6 +27,9 @@ test('order phases for happy path', async () => {
     const toppingsSubtotal = await screen.findByText('Toppings: $', { exact: false });
     expect(toppingsSubtotal).toHaveTextContent('1.50');
 
+    expect(screen.getByText('1 Vanilla')).toBeInTheDocument();
+    expect(screen.getByText('Mochi')).toBeInTheDocument();
+
     //accept terms and conditions and click button to confirm order
     const termsCheckbox = await screen.findByRole('checkbox', { name: /terms and conditions/i });
     await user.click(termsCheckbox);
@@ -35,6 +38,10 @@ test('order phases for happy path', async () => {
     expect(confirmOrder).toBeEnabled();
 
     await user.click(confirmOrder);
+
+    //check if loading spinner is present
+    const spinner = screen.getByText(/Loading.../i);
+    expect(spinner).toBeInTheDocument();
 
     //confirm order number on confirmation page
     const orderNumber = await screen.findByRole('heading', { name: /Your order number is/i });
@@ -51,6 +58,5 @@ test('order phases for happy path', async () => {
     const toppingsTotal = await screen.findByText('Toppings total:', { exact: false });
     expect(toppingsTotal).toHaveTextContent('0.00');
 
-
-    // do we need to await anything to avoid test errors?
+    unmount();
 });
