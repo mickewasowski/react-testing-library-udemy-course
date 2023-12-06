@@ -14,7 +14,8 @@ export default function ScoopOption({name, imagePath}) {
         Math.floor(currentInput) === currentInput;
         setIsInvalidInput(!valueIsValid);
 
-        updateItemCount(name, parseInt(event.target.value), "scoops")
+        const newValue = valueIsValid ? parseInt(currentInput) : 0
+        updateItemCount(name, newValue, "scoops")
     }
 
     return(

@@ -18,4 +18,4 @@ test('scoop spinbutton to become red on invalid value', async () => {
     await user.clear(vanillaScoop);
     await user.type(vanillaScoop, '3');
     expect(vanillaScoop).not.toHaveClass('is-invalid');
-})
+});
