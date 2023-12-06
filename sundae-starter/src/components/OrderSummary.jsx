@@ -12,12 +12,27 @@ export default function OrderSummary({ changeOrderPhase }) {
         </li>
     });
 
-    const toppingArray = Object.keys(optionCounts.toppings); // example: ["M&Ms", "Hot Fundge"]
-    const toppingList = toppingArray.map((key) => {
-        return <li key={key}>
-            {key}
-        </li>
-    });
+    const hasToppings = totals.toppings > 0;
+    let toppingsDisplay = null;
+
+    if (hasToppings) {
+        const toppingArray = Object.keys(optionCounts.toppings); // example: ["M&Ms", "Hot Fundge"]
+        const toppingList = toppingArray.map((key) => {
+            return <li key={key}>
+                {key}
+            </li>
+        });
+
+        toppingsDisplay = (
+            <>
+                <h2>Toppings: {formatCurrency(totals.toppings)}</h2>
+                <ul>
+                    {toppingList}
+                </ul>
+            </>
+        )
+    }
+
 
     const finalizeOrder = () => changeOrderPhase('complete');
 
@@ -28,10 +43,7 @@ export default function OrderSummary({ changeOrderPhase }) {
             <ul>
                 {scoopList}
             </ul>
-            <h2>Toppings: {formatCurrency(totals.toppings)}</h2>
-            <ul>
-                {toppingList}
-            </ul>
+            { toppingsDisplay }
             <SummaryForm order={finalizeOrder}/>
         </div>
     )
