@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Popover from 'react-bootstrap/Popover';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 
-function SummaryForm() {
+function SummaryForm({ order }) {
     const [isChecked, setIsChecked] = useState(false);
 
     const popover = (
@@ -22,6 +22,11 @@ function SummaryForm() {
         </span>
     )
 
+    const handleOrder = async (event) => {
+        event.preventDefault();
+        order();
+    }
+
     return(
         <Form>
             <Form.Group controlId="terms-and-conditions">
@@ -32,7 +37,7 @@ function SummaryForm() {
                     label={checkboxLabel}
                 />
             </Form.Group>
-            <Button type="submit" disabled={!isChecked}>Confirm order</Button>
+            <Button type="submit" disabled={!isChecked} onClick={handleOrder}>Confirm order</Button>
         </Form>
     );
 }
