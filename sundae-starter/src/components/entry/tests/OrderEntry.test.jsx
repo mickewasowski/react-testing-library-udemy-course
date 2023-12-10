@@ -2,7 +2,8 @@
 import { render, screen } from '../../../test-utils/testing-library-utils'; // this provides a global wrapper with our context
 import OrderEntry from '../OrderEntry';
 import { server } from '../../../mocks/server';
-import { HttpResponse, http } from 'msw'
+import { HttpResponse, http } from 'msw';
+import userEvent from '@testing-library/user-event';
 
 
 test('handles errors for scoops and toppings routes', async () => {
@@ -26,4 +27,20 @@ test('handles errors for scoops and toppings routes', async () => {
     const alerts = await screen.findAllByRole('alert');
 
     expect(alerts).toHaveLength(2);
+});
+
+test('order button to be disabled if no scoops were added', async () => {
+    render(<OrderEntry changeOrderPhase={vi.fn()} />);
+    const user = userEvent.setup();
+
+    const vanilla = await screen.findByRole('spinbutton', { name: 'Vanilla' });
+    await user.clear(vanilla);
+    await user.type(vanilla, '2');
+
+    const orderButton = screen.getByRole('button', { name: /order sundae/i });
+    expect(orderButton).toBeEnabled();
+
+    await user.clear(vanilla);
+    await user.type(vanilla, '0');
+    expect(orderButton).toBeDisabled();
 });

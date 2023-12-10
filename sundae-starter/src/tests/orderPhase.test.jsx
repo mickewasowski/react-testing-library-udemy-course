@@ -60,3 +60,49 @@ test('order phases for happy path', async () => {
 
     unmount();
 });
+
+test('order summary should not have toppings if no toppings have been ordered', async () => {
+    render(<App />);
+    const user = userEvent.setup();
+
+    const chocolate = await screen.findByRole('spinbutton', { name: 'Chocolate' });
+    await user.clear(chocolate);
+    await user.type(chocolate, '1');
+
+    const orderButton = await screen.findByRole('button', { name: /order sundae/i });
+    await user.click(orderButton);
+
+    const scoops = screen.getByRole('heading', { name: 'Scoops: $2.00' });
+    expect(scoops).toBeInTheDocument();
+
+    const toppings = screen.queryByRole('heading', { name: /toppings/i }); //query is used when you expect something not to be there, it will return null
+    expect(toppings).not.toBeInTheDocument();
+});
+
+test('no toppings should be present in the order summary menu if some were added and then removed', async () => {
+    render(<App />);
+    const user = userEvent.setup();
+
+    const chocolate = await screen.findByRole('spinbutton', { name: 'Chocolate' });
+    await user.clear(chocolate);
+    await user.type(chocolate, '1');
+
+    const mochi = await screen.findByRole('checkbox', { name: 'Mochi' });
+    await user.click(mochi);
+    expect(mochi).toBeChecked();
+    const toppingsTotal = screen.getByText('Toppings total: ', { exact: false });
+    expect(toppingsTotal).toHaveTextContent('1.50');
+
+    await user.click(mochi);
+    expect(mochi).not.toBeChecked();
+    expect(toppingsTotal).toHaveTextContent('0.00');
+
+    const orderButton = await screen.findByRole('button', { name: /order sundae/i });
+    await user.click(orderButton);
+
+    const scoops = await screen.findByRole('heading', { name: /scoops/i });
+    expect(scoops).toHaveTextContent('2.00');
+
+    const toppings = screen.queryByRole('heading', { name: /toppings/i });
+    expect(toppings).not.toBeInTheDocument();
+});

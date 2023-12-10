@@ -3,11 +3,13 @@ import { useOrderDetails } from "../contexts/OrderDetails";
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 import axios from "axios";
+import AlertBanner from './common/AlertBanner';
 
 export default function OrderConfirmation({ changeOrderPhase }) {
     const { resetOrderFuntion } = useOrderDetails();
     const [orderNumber, setOrderNumber] = useState('');
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState('');
 
 
     useEffect(() => {
@@ -18,10 +20,8 @@ export default function OrderConfirmation({ changeOrderPhase }) {
                     setIsLoading(false);
                 })
                 .catch((error) => {
-                    if (error.name !== 'CanceledError') {
-                        console.log(error);
-                    }
                     setIsLoading(false);
+                    setError(error);
                 });
         }, 400);
     }, []);
@@ -31,21 +31,33 @@ export default function OrderConfirmation({ changeOrderPhase }) {
         changeOrderPhase('inProgress')
     };
 
-    return(
-        <>
-            {
-                isLoading ?
-                <Spinner animation="border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </Spinner>
-                :
-                <div>
-                    <h1>Thank you!</h1>
-                    <h2>Your order number is {orderNumber}</h2>
-                    <p>as per our terms and conditions, nothing will happen now</p>
-                    <Button onClick={handleNewOrder}>Create new order</Button>
-                </div>
-            }
-        </>
-    )
+    const newOrderButton = (
+        <Button onClick={handleNewOrder}>Create new order</Button>
+    );
+
+    if (error) {
+        return(
+            <>
+                <AlertBanner />
+                {newOrderButton}
+            </>
+        );
+    }
+
+    if (orderNumber) {
+        return(
+            <div>
+                <h1>Thank you!</h1>
+                <h2>Your order number is {orderNumber}</h2>
+                <p>as per our terms and conditions, nothing will happen now</p>
+                <Button onClick={handleNewOrder}>Create new order</Button>
+            </div>
+        );
+    } else {
+        return(
+            <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </Spinner>
+        );
+    }
 }
