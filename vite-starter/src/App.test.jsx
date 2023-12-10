@@ -1,8 +1,97 @@
-import { render, screen } from "@testing-library/react";
-import App from "./App";
+import { render, screen, fireEvent } from '@testing-library/react';
+import App from './App';
+import { kebabCaseToTitleCase } from './utils';
 
-test("App contains correct heading", () => {
+test("button starts with the correct text and color", () => {
+  //render App
   render(<App />);
-  const headingElement = screen.getByText(/learn react/i);
-  expect(headingElement).toBeInTheDocument();
+
+  //find button
+  const btnElement = screen.getByRole("button", { name: /blue/i });
+
+  //check initial color of the button
+  //expect(btnElement).toHaveClass("red");
+  expect(btnElement).toHaveClass("medium-violet-red");
+
+  //click the button
+  fireEvent.click(btnElement);
+
+  //check the button text
+  //expect(btnElement).toHaveTextContent(/change to red/i)
+  expect(btnElement).toHaveTextContent(/change to Medium Violet Red/i)
+
+  //check the button color
+  //expect(btnElement).toHaveClass("blue");
+  //expect(btnElement).toHaveStyle({ "background-color": "rgb(0, 0, 255)" });
+
+  expect(btnElement).toHaveClass("midnight-blue");
+  expect(btnElement).toHaveStyle({ "background-color": "rgb(25, 25, 112)" });
+});
+
+test("checkbox flow", () => {
+  render(<App />);
+
+  const button = screen.getByRole("button", { name: /blue/i });
+  const checkbox = screen.getByRole("checkbox", { name: /disable button/i });
+
+  expect(button).toBeEnabled();
+  expect(checkbox).not.toBeChecked();
+});
+
+test("checkbox flow with clicking", () => {
+  render(<App />);
+
+  const button = screen.getByRole("button", { name: /blue/i });
+  const checkbox = screen.getByRole("checkbox", { name: /disable button/i });
+
+  fireEvent.click(checkbox);
+
+  expect(button).toBeDisabled();
+  expect(checkbox).toBeChecked();
+
+  fireEvent.click(checkbox);
+
+  expect(button).toBeEnabled();
+  expect(checkbox).not.toBeChecked();
+});
+
+test("button turns grey when checkbox is ticked", () => {
+  render(<App/>);
+
+  const button = screen.getByRole("button", { name: /blue/i });
+  const checkbox = screen.getByRole("checkbox", { name: /disable button/i });
+
+  fireEvent.click(checkbox);
+
+  expect(button).toBeDisabled();
+  expect(button).toHaveStyle({ "background-color": "rgb(128, 128, 128)" });
+
+  fireEvent.click(checkbox);
+
+  expect(button).toBeEnabled();
+  //expect(button).toHaveStyle({ "background-color": "rgb(255, 0, 0)" });
+  expect(button).toHaveStyle({ "background-color": "rgb(199, 21, 133)" });
+
+  fireEvent.click(button);
+
+  //expect(button).toHaveStyle({ "background-color": "rgb(0, 0, 255)" });
+  expect(button).toHaveStyle({ "background-color": "rgb(25, 25, 112)" });
+
+  fireEvent.click(checkbox);
+
+  expect(button).toHaveStyle({ "background-color": "rgb(128, 128, 128)" });
+});
+
+describe("kebabCaseToTitleCase", () => {
+  test("works for no hyphens", () => {
+    expect(kebabCaseToTitleCase("red")).toBe("Red");
+  });
+
+  test("works for one hyphen", () => {
+    expect(kebabCaseToTitleCase("midnight-blue")).toBe("Midnight Blue");
+  });
+
+  test("works for multiple hyphens", () => {
+    expect(kebabCaseToTitleCase("medium-violet-red")).toBe("Medium Violet Red");
+  });
 });
